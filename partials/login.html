@@ -1,49 +1,18 @@
 <div class="ui form segment">
   <h3 class="ui header">Log-in</h3>
   <div class="field">
-    <label>Username</label>
-    <input type="text">
+    <label>Email</label>
+    <input type="text" ng-model="email">
   </div>
   <div class="field">
     <label>Password</label>
-    <input type="password">
+    <input type="password" ng-model="password">
   </div>
   <div class="ui right floated buttons">
-    <div class="ui button">Login</div>
+    <a class="ui button" ng-click="login()">Login</a>
     <div class="or"></div>
-    <div class="ui positive button" ng-click="signup()">Sign up</div>
+    <a class="ui blue button" href="#/register">Sign up</a>
   </div>
 </div>
-<div class="ui basic modal">
-  <i class="close icon"></i>
-  <div class="header">
-    Sign up
-  </div>
-  <div class="content">
-    <div class="ui form segment">
-      <div class="field">
-        <label>Username</label>
-        <input type="text">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password">
-      </div>
-      <div class="field">
-        <label>Confirm Password</label>
-        <input type="password">
-      </div>
-    </div>
-  </div>
-  <div class="actions">
-    <div class="two fluid ui buttons">
-      <div class="ui positive left labeled icon button">
-        Regist
-        <i class="checkmark icon"></i>
-      </div>
-      <div class="ui negative right labeled icon button">
-        <i class="remove icon"></i>
-        Cancel
-      </div>
-    </div>  </div>
-  </div>
+
+
