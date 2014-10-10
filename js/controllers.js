@@ -10,7 +10,7 @@ angular.module('myApp.controllers', [])
             password: $scope.password,
             success: function(user) {
                 $rootScope.user = user; 
-                $location.path('/lists');
+                $location.path('/lists/incomplete');
                 $scope.$apply();
             },
             error: function(xhr) {
@@ -32,7 +32,7 @@ angular.module('myApp.controllers', [])
             password: $scope.password1,
             success: function(user) {
                 $rootScope.user = user; 
-                $location.path('/lists');
+                $location.path('/lists/incomplete');
                 $scope.$apply();
             },
             error: function(xhr) {
@@ -41,6 +41,88 @@ angular.module('myApp.controllers', [])
         });
     }
 }])
-.controller('ListsCtrl', ['$rootScope', function($rootScope){
-	
+.controller('ListsCtrl', ['$scope','$rootScope', '$location', '$routeParams', function($scope, $rootScope, $location, $routeParams){
+    if (!$rootScope.user){
+        alert("Login fails");
+        $location.path('/login');
+        return;
+    }
+
+    if ($routeParams['status'] == 'complete'){
+       $scope.status = true; 
+    }
+    else{
+        $scope.status = false;
+    }
+    
+    Todo.loadTodos({
+        success: function(todos) {
+            $scope.todos = [];
+            for (var i in todos){
+                if (todos[i].is_complete == $scope.status){
+                    $scope.todos.push(todos[i]);
+                }
+            }
+            $scope.$apply();
+        },
+        error: function(xhr) {
+            alert("Fail to load list");
+        }
+    });
+
+	$scope.addTodo = function(){
+        Todo.createTodo({
+            todo: {description: $scope.newTodo},
+            success: function(todo){
+                $scope.todos.push(todo);
+                $scope.newTodo = null;
+                $scope.$apply();
+            },
+            error: function(xhr) {
+                alert("An error occurs when you are trying to add a todo");
+            }
+        })
+    }
+
+    $scope.toggleTodo = function(id) {
+        setTimeout(function() {
+            Todo.updateTodo({
+                todoId: $scope.todos[id].id,
+                data: {
+                    is_complete: !$scope.todos[id].is_complete
+                },
+                success: function() {
+                    $scope.todos[id].is_complete = !$scope.todos[id].is_complete;
+                    $scope.$apply();
+                },
+                error: function(xhr) {
+                    alert('todo update error!')
+                }
+            });
+        }, 100);
+    }
+
+    $scope.editTodo = function(id) {
+        $scope.editing = {
+            text: $scope.todos[id].description,
+            id: id
+        };
+    }
+
+    $scope.doneEdit = function(){
+         Todo.updateTodo({
+                todoId: $scope.todos[$scope.editing.id].id,
+                data: {
+                    description: $scope.editing.text
+                },
+                success: function() {
+                    $scope.todos[$scope.editing.id].description = $scope.editing.text;
+                    $scope.editing = null;
+                    $scope.$apply();
+                },
+                error: function(xhr) {
+                    alert('todo update error!')
+                }
+            });
+    }
 }]);
