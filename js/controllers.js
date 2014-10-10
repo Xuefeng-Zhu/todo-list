@@ -41,10 +41,11 @@ angular.module('myApp.controllers', [])
         });
     }
 }])
-.controller('ListsCtrl', ['$scope','$rootScope', function($scope, $rootScope){
+.controller('ListsCtrl', ['$scope','$rootScope', '$location',function($scope, $rootScope, $location){
     if (!$rootScope.user){
         alert("Login fails");
         $location.path('/login');
+        return;
     }
 
     Todo.loadTodos({
@@ -62,6 +63,8 @@ angular.module('myApp.controllers', [])
             todo: {description: $scope.newTodo},
             success: function(todo){
                 $scope.todos.push(todo);
+                $scope.newTodo = null;
+                $scope.$apply();
             },
             error: function(xhr) {
                 alert("An error occurs when you are trying to add a todo");
