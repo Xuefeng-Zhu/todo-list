@@ -71,4 +71,19 @@ angular.module('myApp.controllers', [])
             }
         })
     }
+
+    $scope.toggleTodo = function(id) {
+        Todo.updateTodo({
+            todoId: $scope.todos[id].id,
+            data: {
+                is_complete: !$scope.todos[id].is_complete
+            },
+            success: function(todo) {
+                $scope.todos[id].is_complete = !$scope.todos[id].is_complete;
+            },
+            error: function(xhr) {
+                alert('todo update error!')
+            }
+        });
+    }
 }]);

@@ -13,10 +13,10 @@
 	</div>
 	<div class="thirteen wide column" style="overflow-y: scroll" ng-show="todos">
 		<div class="ui stacked segment">
-			<div class="ui segment event" ng-repeat="todo in todos">
+			<div class="ui segment event" ng-repeat="(id, todo) in todos">
 				<div class="ui toggle checkbox">
-					<input type="checkbox" name="event" id="{{todo.id}}" ng-click="toggleTodo(todo.id)">
-					<label for="{{todo.id}}"></label>
+					<input type="checkbox" name="event" id="{{id}}" ng-click="toggleTodo(id)">
+					<label for="{{id}}"></label>
 				</div>
 				<b style="display:inline">{{todo.description}}</b>
 			</div>
