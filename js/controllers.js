@@ -41,6 +41,31 @@ angular.module('myApp.controllers', [])
         });
     }
 }])
-.controller('ListsCtrl', ['$rootScope', function($rootScope){
-	
+.controller('ListsCtrl', ['$scope','$rootScope', function($scope, $rootScope){
+    if (!$rootScope.user){
+        alert("Login fails");
+        $location.path('/login');
+    }
+
+    Todo.loadTodos({
+        success: function(todos) {
+            $scope.todos = todos;
+            $scope.$apply();
+        },
+        error: function(xhr) {
+            alert("Fail to load list");
+        }
+    });
+
+	$scope.addTodo = function(){
+        Todo.createTodo({
+            todo: {description: $scope.newTodo},
+            success: function(todo){
+                $scope.todos.push(todo);
+            },
+            error: function(xhr) {
+                alert("An error occurs when you are trying to add a todo");
+            }
+        })
+    }
 }]);
